@@ -18,6 +18,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://brute-force-protected-login-1.onrender.com',
+  'https://brute-force-protected-login.vercel.app/',
+  'https://brute-force-protected-git-86c9be-venkatthondamalla98s-projects.vercel.app/',
 ];
 
 const corsOptions = {
