@@ -1,669 +1,786 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Grid,
-  Card,
-  CardContent,
-  Typography,
-  Paper,
-  Avatar,
-  LinearProgress,
-  Chip,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  IconButton,
-  Badge,
-  Divider,
-  Stack,
-  useTheme,
-  alpha
-} from '@mui/material';
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  LineChart,
-  Line,
-  PieChart,
-  Pie,
-  Cell,
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-  RadialBarChart,
-  RadialBar
-} from 'recharts';
+import { BarChart3, TrendingUp, Users, DollarSign, ShoppingCart, Star, Eye, Smartphone, Monitor, Tablet, LogOut } from 'lucide-react';
 
-const Dashboard = () => {
-  const theme = useTheme();
+const Dashboard = ({ user, onLogout }) => {
   const [selectedPeriod, setSelectedPeriod] = useState('This Month');
 
-  // Enhanced data with more realistic values
+  // Sample data
   const salesData = [
-    { month: 'Jan', sales: 65000, profit: 24000, expenses: 16000, growth: 12 },
-    { month: 'Feb', sales: 72000, profit: 28000, expenses: 18000, growth: 15 },
-    { month: 'Mar', sales: 58000, profit: 22000, expenses: 15000, growth: -8 },
-    { month: 'Apr', sales: 85000, profit: 35000, expenses: 20000, growth: 25 },
-    { month: 'May', sales: 91000, profit: 38000, expenses: 22000, growth: 18 },
-    { month: 'Jun', sales: 78000, profit: 32000, expenses: 19000, growth: 10 },
-  ];
-
-  const revenueData = [
-    { month: 'Jan', revenue: 165000, target: 150000 },
-    { month: 'Feb', revenue: 159000, target: 155000 },
-    { month: 'Mar', revenue: 180000, target: 160000 },
-    { month: 'Apr', revenue: 195000, target: 170000 },
-    { month: 'May', revenue: 176000, target: 175000 },
-    { month: 'Jun', revenue: 205000, target: 180000 },
-    { month: 'Jul', revenue: 225000, target: 190000 },
-  ];
-
-  const deviceData = [
-    { name: 'Desktop', value: 45, color: '#6366f1', users: 15420 },
-    { name: 'Mobile', value: 35, color: '#ec4899', users: 12350 },
-    { name: 'Tablet', value: 20, color: '#10b981', users: 6890 },
-  ];
-
-  const performanceData = [
-    { name: 'Performance', value: 85, fill: '#6366f1' },
-    { name: 'Quality', value: 92, fill: '#10b981' },
-    { name: 'Efficiency', value: 78, fill: '#f59e0b' },
-    { name: 'Customer Satisfaction', value: 96, fill: '#ec4899' },
+    { month: 'Jan', sales: 65, profit: 45, expenses: 30 },
+    { month: 'Feb', sales: 72, profit: 52, expenses: 35 },
+    { month: 'Mar', sales: 58, profit: 38, expenses: 28 },
+    { month: 'Apr', sales: 85, profit: 65, expenses: 40 },
+    { month: 'May', sales: 91, profit: 72, expenses: 45 },
+    { month: 'Jun', sales: 78, profit: 58, expenses: 38 },
   ];
 
   const recentOrders = [
-    { 
-      id: '#ORD-2024-001', 
-      customer: 'Alexandra Chen', 
-      amount: 2450, 
-      status: 'Delivered', 
-      date: '2024-01-15',
-      avatar: 'AC',
-      product: 'MacBook Pro 14"',
-      priority: 'high'
-    },
-    { 
-      id: '#ORD-2024-002', 
-      customer: 'Marcus Johnson', 
-      amount: 856, 
-      status: 'Processing', 
-      date: '2024-01-14',
-      avatar: 'MJ',
-      product: 'AirPods Pro',
-      priority: 'medium'
-    },
-    { 
-      id: '#ORD-2024-003', 
-      customer: 'Sofia Rodriguez', 
-      amount: 3200, 
-      status: 'Shipped', 
-      date: '2024-01-13',
-      avatar: 'SR',
-      product: 'iPad Air + Accessories',
-      priority: 'high'
-    },
-    { 
-      id: '#ORD-2024-004', 
-      customer: 'David Kim', 
-      amount: 445, 
-      status: 'Cancelled', 
-      date: '2024-01-12',
-      avatar: 'DK',
-      product: 'Apple Watch Band',
-      priority: 'low'
-    },
-    { 
-      id: '#ORD-2024-005', 
-      customer: 'Emma Thompson', 
-      amount: 1678, 
-      status: 'Delivered', 
-      date: '2024-01-11',
-      avatar: 'ET',
-      product: 'iPhone 15 Case Set',
-      priority: 'medium'
-    },
+    { id: '#ORD-001', customer: 'Alexandra Chen', amount: 2450, status: 'Delivered', product: 'MacBook Pro 14"', avatar: 'AC' },
+    { id: '#ORD-002', customer: 'Marcus Johnson', amount: 856, status: 'Processing', product: 'AirPods Pro', avatar: 'MJ' },
+    { id: '#ORD-003', customer: 'Sofia Rodriguez', amount: 3200, status: 'Shipped', product: 'iPad Air', avatar: 'SR' },
+    { id: '#ORD-004', customer: 'David Kim', amount: 445, status: 'Cancelled', product: 'Apple Watch', avatar: 'DK' },
+    { id: '#ORD-005', customer: 'Emma Thompson', amount: 1678, status: 'Delivered', product: 'iPhone 15', avatar: 'ET' },
   ];
 
   const topProducts = [
-    { name: 'Premium Wireless Headphones', sales: 3247, change: 24.5, revenue: 324700, trend: [20, 35, 28, 42, 38, 45] },
-    { name: 'Smart Fitness Watch', sales: 2156, change: -8.2, revenue: 431200, trend: [45, 38, 35, 28, 32, 30] },
-    { name: 'Ergonomic Laptop Stand', sales: 1893, change: 15.7, revenue: 189300, trend: [15, 22, 28, 35, 42, 48] },
-    { name: 'Wireless Charging Station', sales: 1645, change: 31.8, revenue: 164500, trend: [10, 15, 25, 35, 38, 42] },
-    { name: 'Premium Phone Case', sales: 1234, change: -2.1, revenue: 61700, trend: [25, 22, 20, 18, 19, 18] },
+    { name: 'Premium Wireless Headphones', sales: 3247, change: 24.5, revenue: 324700 },
+    { name: 'Smart Fitness Watch', sales: 2156, change: -8.2, revenue: 431200 },
+    { name: 'Ergonomic Laptop Stand', sales: 1893, change: 15.7, revenue: 189300 },
+    { name: 'Wireless Charging Station', sales: 1645, change: 31.8, revenue: 164500 },
+    { name: 'Premium Phone Case', sales: 1234, change: -2.1, revenue: 61700 },
   ];
 
-  const getStatusConfig = (status) => {
-    const configs = {
-      'Delivered': { color: 'success', bg: alpha('#10b981', 0.1), text: '#059669' },
-      'Processing': { color: 'info', bg: alpha('#3b82f6', 0.1), text: '#2563eb' },
-      'Shipped': { color: 'warning', bg: alpha('#f59e0b', 0.1), text: '#d97706' },
-      'Cancelled': { color: 'error', bg: alpha('#ef4444', 0.1), text: '#dc2626' },
-    };
-    return configs[status] || configs['Processing'];
+  const deviceData = [
+    { name: 'Desktop', value: 45, users: 15420, color: '#6366f1' },
+    { name: 'Mobile', value: 35, users: 12350, color: '#ec4899' },
+    { name: 'Tablet', value: 20, users: 6890, color: '#10b981' },
+  ];
+
+  const cardStyle = {
+    background: 'rgba(255, 255, 255, 0.9)',
+    backdropFilter: 'blur(20px)',
+    borderRadius: '20px',
+    padding: '24px',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   };
 
-  const getPriorityColor = (priority) => {
-    const colors = {
-      'high': '#ef4444',
-      'medium': '#f59e0b',
-      'low': '#6b7280'
-    };
-    return colors[priority] || colors['low'];
+  const hoverCardStyle = {
+    ...cardStyle,
+    transform: 'translateY(-8px)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
   };
 
-  const MetricCard = ({ title, value, change, icon, color, trend, subtitle }) => (
-    <Card sx={{ 
-      borderRadius: 4,
-      background: `linear-gradient(135deg, ${color}15 0%, ${color}05 100%)`,
-      border: `1px solid ${alpha(color, 0.1)}`,
-      position: 'relative',
-      overflow: 'hidden',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      '&:hover': {
-        transform: 'translateY(-8px)',
-        boxShadow: `0 20px 40px ${alpha(color, 0.15)}`,
-        border: `1px solid ${alpha(color, 0.2)}`,
-      },
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '4px',
-        background: `linear-gradient(90deg, ${color} 0%, ${alpha(color, 0.5)} 100%)`,
-      }
-    }}>
-      <CardContent sx={{ p: 3 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-          <Typography variant="body2" sx={{ 
-            color: 'text.secondary', 
-            fontWeight: 600,
+  const MetricCard = ({ title, value, change, icon: Icon, color, subtitle }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+      <div
+        style={isHovered ? hoverCardStyle : cardStyle}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '4px',
+          background: `linear-gradient(90deg, ${color}, ${color}80)`,
+          borderRadius: '20px 20px 0 0'
+        }} />
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+          <div style={{
+            fontSize: '12px',
+            fontWeight: '600',
+            color: '#6b7280',
             textTransform: 'uppercase',
-            letterSpacing: '0.5px',
-            fontSize: '0.75rem'
+            letterSpacing: '0.5px'
           }}>
             {title}
-          </Typography>
-          <Box sx={{ 
-            width: 48, 
-            height: 48, 
-            borderRadius: 3,
-            background: `linear-gradient(135deg, ${alpha(color, 0.1)} 0%, ${alpha(color, 0.05)} 100%)`,
+          </div>
+          <div style={{
+            width: '48px',
+            height: '48px',
+            borderRadius: '12px',
+            background: `${color}20`,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '1.5rem'
+            transform: isHovered ? 'scale(1.1)' : 'scale(1)',
+            transition: 'transform 0.3s ease'
           }}>
-            {icon}
-          </Box>
-        </Box>
-        
-        <Typography variant="h3" sx={{ 
-          fontWeight: 800, 
-          mb: 1,
-          background: `linear-gradient(135deg, ${color} 0%, ${alpha(color, 0.8)} 100%)`,
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          lineHeight: 1.2
-        }}>
-          {value}
-        </Typography>
-        
-        {subtitle && (
-          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
-            {subtitle}
-          </Typography>
-        )}
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Chip 
-            label={`${change > 0 ? '+' : ''}${change}%`}
-            size="small"
-            sx={{
-              backgroundColor: change > 0 ? alpha('#10b981', 0.1) : alpha('#ef4444', 0.1),
-              color: change > 0 ? '#059669' : '#dc2626',
-              fontWeight: 700,
-              fontSize: '0.75rem',
-              borderRadius: 2,
-              height: 24
-            }}
-          />
-          {trend && (
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-              {trend.map((point, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: 3,
-                    height: point * 0.8,
-                    backgroundColor: alpha(color, 0.6),
-                    borderRadius: 1,
-                    transition: 'all 0.3s ease',
-                  }}
-                />
-              ))}
-            </Box>
-          )}
-        </Box>
-      </CardContent>
-    </Card>
-  );
+            <Icon style={{ width: '24px', height: '24px', color: color }} />
+          </div>
+        </div>
 
-  const ChartCard = ({ title, children, actions }) => (
-    <Card sx={{ 
-      borderRadius: 4,
-      background: 'rgba(255, 255, 255, 0.8)',
-      backdropFilter: 'blur(20px)',
-      border: '1px solid rgba(255, 255, 255, 0.2)',
-      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-      '&:hover': {
-        boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
-      }
-    }}>
-      <CardContent sx={{ p: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h6" sx={{ fontWeight: 700, color: 'text.primary' }}>
+        <div style={{ marginBottom: '8px' }}>
+          <div style={{
+            fontSize: '32px',
+            fontWeight: '800',
+            color: '#111827',
+            marginBottom: '4px',
+            lineHeight: '1.2'
+          }}>
+            {value}
+          </div>
+          {subtitle && (
+            <div style={{ fontSize: '14px', color: '#6b7280' }}>
+              {subtitle}
+            </div>
+          )}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            padding: '4px 10px',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: '700',
+            backgroundColor: change > 0 ? '#dcfce7' : '#fee2e2',
+            color: change > 0 ? '#16a34a' : '#dc2626'
+          }}>
+            {change > 0 ? '+' : ''}{change}%
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+            {[15, 25, 20, 30, 35, 28].map((height, i) => (
+              <div
+                key={i}
+                style={{
+                  width: '3px',
+                  height: `${height * 0.6}px`,
+                  backgroundColor: change > 0 ? '#10b981' : '#ef4444',
+                  borderRadius: '2px',
+                  opacity: '0.7'
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const ChartCard = ({ title, children, actions, height = 'auto' }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+      <div
+        style={{
+          ...cardStyle,
+          ...(isHovered ? { boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)' } : {}),
+          height: height
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#111827', margin: 0 }}>
             {title}
-          </Typography>
+          </h3>
           {actions}
-        </Box>
+        </div>
         {children}
-      </CardContent>
-    </Card>
-  );
+      </div>
+    );
+  };
+
+  const BarChart = ({ data }) => {
+    const maxValue = Math.max(...data.map(d => Math.max(d.sales, d.profit)));
+
+    return (
+      <div>
+        <div style={{ display: 'flex', gap: '16px', fontSize: '14px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#6366f1' }} />
+            <span style={{ color: '#6b7280' }}>Sales</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#10b981' }} />
+            <span style={{ color: '#6b7280' }}>Profit</span>
+          </div>
+        </div>
+
+        <div style={{
+          display: 'flex',
+          alignItems: 'end',
+          justifyContent: 'space-between',
+          height: '200px',
+          gap: '8px'
+        }}>
+          {data.map((item, index) => (
+            <div key={index} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '8px',
+              flex: 1
+            }}>
+              <div style={{ display: 'flex', gap: '4px', alignItems: 'end', height: '160px' }}>
+                <div
+                  style={{
+                    backgroundColor: '#6366f1',
+                    borderRadius: '4px 4px 0 0',
+                    width: '24px',
+                    height: `${(item.sales / maxValue) * 150}px`,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#4f46e5'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = '#6366f1'}
+                  title={`Sales: ${item.sales}`}
+                />
+                <div
+                  style={{
+                    backgroundColor: '#10b981',
+                    borderRadius: '4px 4px 0 0',
+                    width: '24px',
+                    height: `${(item.profit / maxValue) * 150}px`,
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease'
+                  }}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#059669'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = '#10b981'}
+                  title={`Profit: ${item.profit}`}
+                />
+              </div>
+              <div style={{ fontSize: '12px', fontWeight: '500', color: '#6b7280' }}>
+                {item.month}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const PieChart = ({ data }) => {
+    const total = data.reduce((sum, item) => sum + item.value, 0);
+    let currentAngle = 0;
+
+    const radius = 80;
+    const centerX = 100;
+    const centerY = 100;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+        <div style={{ position: 'relative', width: '200px', height: '200px' }}>
+          <svg width="200" height="200" viewBox="0 0 200 200" style={{ transform: 'rotate(-90deg)' }}>
+            {data.map((item, index) => {
+              const percentage = (item.value / total) * 100;
+              const angle = (percentage / 100) * 360;
+              const startAngle = currentAngle;
+              currentAngle += angle;
+
+              const startAngleRad = (startAngle * Math.PI) / 180;
+              const endAngleRad = ((startAngle + angle) * Math.PI) / 180;
+
+              const x1 = centerX + radius * Math.cos(startAngleRad);
+              const y1 = centerY + radius * Math.sin(startAngleRad);
+              const x2 = centerX + radius * Math.cos(endAngleRad);
+              const y2 = centerY + radius * Math.sin(endAngleRad);
+
+              const largeArcFlag = angle > 180 ? 1 : 0;
+
+              const pathData = [
+                `M ${centerX} ${centerY}`,
+                `L ${x1} ${y1}`,
+                `A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2}`,
+                `Z`
+              ].join(' ');
+
+              return (
+                <path
+                  key={index}
+                  d={pathData}
+                  fill={item.color}
+                  style={{ cursor: 'pointer', transition: 'opacity 0.3s ease' }}
+                  onMouseEnter={(e) => e.target.style.opacity = '0.8'}
+                  onMouseLeave={(e) => e.target.style.opacity = '1'}
+                />
+              );
+            })}
+          </svg>
+
+          <div style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '24px', fontWeight: '700', color: '#111827' }}>
+              {total}%
+            </div>
+            <div style={{ fontSize: '12px', color: '#6b7280' }}>
+              Total
+            </div>
+          </div>
+        </div>
+
+        <div style={{ width: '100%' }}>
+          {data.map((item, index) => (
+            <div key={index} style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              marginBottom: '8px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{
+                  width: '12px',
+                  height: '12px',
+                  borderRadius: '50%',
+                  backgroundColor: item.color
+                }} />
+                <span style={{ fontSize: '14px', fontWeight: '500', color: '#374151' }}>
+                  {item.name}
+                </span>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '14px', fontWeight: '700', color: '#111827' }}>
+                  {item.value}%
+                </div>
+                <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                  {item.users.toLocaleString()}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  const getStatusColor = (status) => {
+    const colors = {
+      'Delivered': { bg: '#dcfce7', text: '#16a34a' },
+      'Processing': { bg: '#dbeafe', text: '#2563eb' },
+      'Shipped': { bg: '#fef3c7', text: '#d97706' },
+      'Cancelled': { bg: '#fee2e2', text: '#dc2626' },
+    };
+    return colors[status] || colors['Processing'];
+  };
 
   return (
-    <Box sx={{ 
+    <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      position: 'relative',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%)',
-        pointerEvents: 'none'
-      }
+      borderRadius: '20px',
+      position: 'relative'
     }}>
-      <Box sx={{ position: 'relative', zIndex: 1, p: 4 }}>
-        {/* Enhanced Header */}
-        <Box sx={{ mb: 6 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-            <Box>
-              <Typography variant="h2" sx={{ 
-                fontWeight: 900,
+      {/* Background Effects */}
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        background: 'radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%)'
+      }} />
+
+      <div style={{ position: 'relative', zIndex: 1, padding: '24px' }}>
+        {/* Header */}
+        <div style={{ marginBottom: '32px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+            <div>
+              <h1 style={{
+                fontSize: '48px',
+                fontWeight: '900',
                 color: 'white',
-                mb: 1,
+                margin: '0 0 8px 0',
                 textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
                 letterSpacing: '-0.02em'
               }}>
                 Dashboard
-              </Typography>
-              <Typography variant="h6" sx={{ 
+              </h1>
+              <p style={{
                 color: 'rgba(255, 255, 255, 0.8)',
-                fontWeight: 400
+                fontSize: '18px',
+                fontWeight: '400',
+                margin: 0
               }}>
-                Welcome back, here's what's happening with your business today.
-              </Typography>
-            </Box>
-            
-            <Stack direction="row" spacing={2}>
+                Welcome back, {user?.name || 'User'}! Here's what's happening with your business today.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               {['Today', 'This Week', 'This Month', 'This Quarter'].map((period) => (
-                <Button
+                <button
                   key={period}
-                  variant={selectedPeriod === period ? 'contained' : 'outlined'}
                   onClick={() => setSelectedPeriod(period)}
-                  sx={{
-                    borderRadius: 3,
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    px: 3,
-                    py: 1,
-                    color: selectedPeriod === period ? '#667eea' : 'white',
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '12px',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    border: selectedPeriod === period ? 'none' : '1px solid rgba(255, 255, 255, 0.3)',
                     backgroundColor: selectedPeriod === period ? 'white' : 'transparent',
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                    boxShadow: selectedPeriod === period ? '0 8px 32px rgba(0, 0, 0, 0.2)' : 'none',
-                    '&:hover': {
-                      backgroundColor: selectedPeriod === period ? 'white' : 'rgba(255, 255, 255, 0.1)',
-                      borderColor: 'rgba(255, 255, 255, 0.5)',
+                    color: selectedPeriod === period ? '#667eea' : 'white',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    boxShadow: selectedPeriod === period ? '0 8px 32px rgba(0, 0, 0, 0.2)' : 'none'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (selectedPeriod !== period) {
+                      e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedPeriod !== period) {
+                      e.target.style.backgroundColor = 'transparent';
+                      e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                     }
                   }}
                 >
                   {period}
-                </Button>
+                </button>
               ))}
-            </Stack>
-          </Box>
-        </Box>
 
-        {/* Enhanced Metrics Cards */}
-        <Grid container spacing={4} sx={{ mb: 6 }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricCard
-              title="Total Revenue"
-              value="$847,562"
-              change={24.8}
-              icon="💰"
-              color="#6366f1"
-              trend={[15, 25, 35, 28, 42, 38, 45]}
-              subtitle="vs last month"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricCard
-              title="Active Orders"
-              value="3,247"
-              change={12.5}
-              icon="📦"
-              color="#10b981"
-              trend={[20, 18, 25, 30, 35, 40, 38]}
-              subtitle="orders pending"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricCard
-              title="New Customers"
-              value="1,896"
-              change={-8.2}
-              icon="👥"
-              color="#f59e0b"
-              trend={[40, 35, 30, 25, 28, 22, 20]}
-              subtitle="this period"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <MetricCard
-              title="Satisfaction"
-              value="98.5%"
-              change={3.1}
-              icon="⭐"
-              color="#ec4899"
-              trend={[25, 28, 32, 35, 38, 42, 45]}
-              subtitle="customer rating"
-            />
-          </Grid>
-        </Grid>
+              <button
+                onClick={onLogout}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: '12px',
+                  fontSize: '14px',
+                  fontWeight: '600',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  color: 'white',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  marginLeft: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px'
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                }}
+              >
+                <LogOut style={{ width: '16px', height: '16px' }} />
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
 
-        {/* Enhanced Charts Section */}
-        <Grid container spacing={4} sx={{ mb: 6 }}>
-          {/* Revenue vs Target */}
-          <Grid item xs={12} lg={8}>
-            <ChartCard title="Revenue Performance" actions={
-              <Stack direction="row" spacing={1}>
-                <Chip label="Revenue" size="small" sx={{ backgroundColor: alpha('#6366f1', 0.1), color: '#6366f1' }} />
-                <Chip label="Target" size="small" sx={{ backgroundColor: alpha('#ec4899', 0.1), color: '#ec4899' }} />
-              </Stack>
-            }>
-              <ResponsiveContainer width="100%" height={350}>
-                <AreaChart data={revenueData}>
-                  <defs>
-                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#6366f1" stopOpacity={0.05}/>
-                    </linearGradient>
-                    <linearGradient id="colorTarget" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ec4899" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#ec4899" stopOpacity={0.05}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
-                  <XAxis dataKey="month" stroke="#6b7280" fontSize={12} />
-                  <YAxis stroke="#6b7280" fontSize={12} />
-                  <Tooltip 
-                    contentStyle={{
-                      backgroundColor: 'white',
-                      border: 'none',
-                      borderRadius: '12px',
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
-                    }}
-                  />
-                  <Area type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={3} fill="url(#colorRevenue)" />
-                  <Area type="monotone" dataKey="target" stroke="#ec4899" strokeWidth={2} strokeDasharray="5 5" fill="url(#colorTarget)" />
-                </AreaChart>
-              </ResponsiveContainer>
-            </ChartCard>
-          </Grid>
+        {/* Metric Cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: '24px',
+          marginBottom: '32px'
+        }}>
+          <MetricCard
+            title="Total Revenue"
+            value="$847,562"
+            change={24.8}
+            icon={DollarSign}
+            color="#6366f1"
+            subtitle="vs last month"
+          />
+          <MetricCard
+            title="Active Orders"
+            value="3,247"
+            change={12.5}
+            icon={ShoppingCart}
+            color="#10b981"
+            subtitle="orders pending"
+          />
+          <MetricCard
+            title="New Customers"
+            value="1,896"
+            change={-8.2}
+            icon={Users}
+            color="#f59e0b"
+            subtitle="this period"
+          />
+          <MetricCard
+            title="Satisfaction"
+            value="98.5%"
+            change={3.1}
+            icon={Star}
+            color="#ec4899"
+            subtitle="customer rating"
+          />
+        </div>
 
-          {/* Performance Metrics */}
-          <Grid item xs={12} lg={4}>
-            <ChartCard title="Performance Overview">
-              <ResponsiveContainer width="100%" height={350}>
-                <RadialBarChart cx="50%" cy="50%" innerRadius="20%" outerRadius="90%" data={performanceData}>
-                  <RadialBar dataKey="value" cornerRadius={10} />
-                  <Tooltip />
-                </RadialBarChart>
-              </ResponsiveContainer>
-            </ChartCard>
-          </Grid>
-        </Grid>
+        {/* Charts Row */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
+          gap: '24px',
+          marginBottom: '32px'
+        }}>
+          {/* Revenue Performance */}
+          <ChartCard
+            title="Revenue Performance"
+            actions={
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '4px 10px',
+                  borderRadius: '12px',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                  backgroundColor: '#e0e7ff',
+                  color: '#6366f1'
+                }}>
+                  Revenue
+                </span>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  padding: '4px 10px',
+                  borderRadius: '12px',
+                  fontSize: '12px',
+                  fontWeight: '500',
+                  backgroundColor: '#fce7f3',
+                  color: '#ec4899'
+                }}>
+                  Target
+                </span>
+              </div>
+            }
+            height="400px"
+          >
+            {/* Revenue Area Chart */}
+            <div style={{ height: '250px', display: 'flex', alignItems: 'end', gap: '8px' }}>
+              {[165, 159, 180, 195, 176, 205, 225].map((height, index) => (
+                <div key={index} style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px',
+                  flex: 1
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'end', height: '200px' }}>
+                    <div
+                      style={{
+                        background: 'linear-gradient(to top, #6366f1, #a5b4fc)',
+                        borderRadius: '8px 8px 0 0',
+                        width: '100%',
+                        height: `${(height / 225) * 180}px`,
+                        opacity: '0.8',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => e.target.style.opacity = '1'}
+                      onMouseLeave={(e) => e.target.style.opacity = '0.8'}
+                    />
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#6b7280', fontWeight: '500' }}>
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'][index]}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ChartCard>
 
-        <Grid container spacing={4} sx={{ mb: 6 }}>
+          {/* Performance Overview */}
+          <ChartCard title="Performance Overview" height="400px">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {[
+                { name: 'Performance', value: 85, color: '#6366f1' },
+                { name: 'Quality', value: 92, color: '#10b981' },
+                { name: 'Efficiency', value: 78, color: '#f59e0b' },
+                { name: 'Satisfaction', value: 96, color: '#ec4899' },
+              ].map((item, index) => (
+                <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px' }}>
+                    <span style={{ fontWeight: '500', color: '#374151' }}>{item.name}</span>
+                    <span style={{ fontWeight: '700', color: '#111827' }}>{item.value}%</span>
+                  </div>
+                  <div style={{
+                    width: '100%',
+                    height: '8px',
+                    backgroundColor: '#f3f4f6',
+                    borderRadius: '4px',
+                    overflow: 'hidden'
+                  }}>
+                    <div
+                      style={{
+                        height: '100%',
+                        width: `${item.value}%`,
+                        backgroundColor: item.color,
+                        borderRadius: '4px',
+                        transition: 'all 0.3s ease'
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </ChartCard>
+        </div>
+
+        {/* Second Row Charts */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
+          gap: '24px',
+          marginBottom: '32px'
+        }}>
           {/* Sales Analytics */}
-          <Grid item xs={12} lg={8}>
-            <ChartCard title="Sales Analytics">
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={salesData} barGap={10}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.1)" />
-                  <XAxis dataKey="month" stroke="#6b7280" fontSize={12} />
-                  <YAxis stroke="#6b7280" fontSize={12} />
-                  <Tooltip 
-                    contentStyle={{
-                      backgroundColor: 'white',
-                      border: 'none',
-                      borderRadius: '12px',
-                      boxShadow: '0 20px 40px rgba(0,0,0,0.1)'
-                    }}
-                  />
-                  <Bar dataKey="sales" fill="#6366f1" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="profit" fill="#10b981" radius={[4, 4, 0, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </ChartCard>
-          </Grid>
+          <ChartCard title="Sales Analytics">
+            <BarChart data={salesData} />
+          </ChartCard>
 
-          {/* Device Usage */}
-          <Grid item xs={12} lg={4}>
-            <ChartCard title="Traffic Sources">
-              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                    <Pie
-                      data={deviceData}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      dataKey="value"
-                      startAngle={90}
-                      endAngle={450}
-                    >
-                      {deviceData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                  </PieChart>
-                </ResponsiveContainer>
-                
-                <Box sx={{ width: '100%', mt: 2 }}>
-                  {deviceData.map((item, index) => (
-                    <Box key={item.name} sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', py: 1 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Box sx={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: item.color }} />
-                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{item.name}</Typography>
-                      </Box>
-                      <Box sx={{ textAlign: 'right' }}>
-                        <Typography variant="body2" sx={{ fontWeight: 700 }}>{item.value}%</Typography>
-                        <Typography variant="caption" color="text.secondary">{item.users.toLocaleString()}</Typography>
-                      </Box>
-                    </Box>
-                  ))}
-                </Box>
-              </Box>
-            </ChartCard>
-          </Grid>
-        </Grid>
+          {/* Traffic Sources */}
+          <ChartCard title="Traffic Sources">
+            <PieChart data={deviceData} />
+          </ChartCard>
+        </div>
 
-        {/* Enhanced Tables Section */}
-        <Grid container spacing={4}>
+        {/* Bottom Section */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '2fr 1fr',
+          gap: '24px'
+        }}>
           {/* Recent Orders */}
-          <Grid item xs={12} lg={8}>
-            <ChartCard title="Recent Orders" actions={
-              <Button variant="outlined" size="small" sx={{ borderRadius: 2 }}>
+          <ChartCard
+            title="Recent Orders"
+            actions={
+              <button style={{
+                padding: '8px 16px',
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#6366f1',
+                border: '1px solid #6366f1',
+                borderRadius: '8px',
+                backgroundColor: 'transparent',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = '#f0f9ff';
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = 'transparent';
+                }}
+              >
                 View All Orders
-              </Button>
-            }>
-              <TableContainer>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Order</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Customer</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Amount</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Status</TableCell>
-                      <TableCell sx={{ fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', fontSize: '0.75rem', letterSpacing: '0.5px' }}>Priority</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {recentOrders.map((order) => {
-                      const statusConfig = getStatusConfig(order.status);
-                      return (
-                        <TableRow key={order.id} sx={{ 
-                          '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' },
-                          transition: 'background-color 0.2s ease'
-                        }}>
-                          <TableCell>
-                            <Box>
-                              <Typography variant="body2" sx={{ fontWeight: 600, color: '#6366f1' }}>
-                                {order.id}
-                              </Typography>
-                              <Typography variant="caption" color="text.secondary">
-                                {order.product}
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                              <Avatar 
-                                sx={{ 
-                                  width: 40, 
-                                  height: 40, 
-                                  fontSize: '0.875rem',
-                                  background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
-                                  fontWeight: 600
-                                }}
-                              >
-                                {order.avatar}
-                              </Avatar>
-                              <Box>
-                                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                                  {order.customer}
-                                </Typography>
-                                <Typography variant="caption" color="text.secondary">
-                                  {order.date}
-                                </Typography>
-                              </Box>
-                            </Box>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="body1" sx={{ fontWeight: 700 }}>
-                              ${order.amount.toLocaleString()}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Chip 
-                              label={order.status}
-                              size="small"
-                              sx={{
-                                backgroundColor: statusConfig.bg,
-                                color: statusConfig.text,
-                                fontWeight: 600,
-                                borderRadius: 2,
-                                textTransform: 'capitalize'
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Box 
-                              sx={{ 
-                                width: 8, 
-                                height: 8, 
-                                borderRadius: '50%', 
-                                backgroundColor: getPriorityColor(order.priority) 
-                              }} 
-                            />
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </ChartCard>
-          </Grid>
+              </button>
+            }
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {recentOrders.map((order) => {
+                const statusColor = getStatusColor(order.status);
+                return (
+                  <div key={order.id} style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '16px',
+                    backgroundColor: '#f9fafb',
+                    borderRadius: '12px',
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer'
+                  }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = '#f3f4f6';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = '#f9fafb';
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                      <div style={{
+                        width: '40px',
+                        height: '40px',
+                        background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        fontWeight: '600',
+                        fontSize: '14px'
+                      }}>
+                        {order.avatar}
+                      </div>
+                      <div>
+                        <div style={{ fontWeight: '600', color: '#111827', fontSize: '14px' }}>
+                          {order.customer}
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                          {order.product}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ textAlign: 'right' }}>
+                      <div style={{ fontWeight: '700', color: '#111827', fontSize: '16px' }}>
+                        ${order.amount.toLocaleString()}
+                      </div>
+                      <div style={{
+                        display: 'inline-flex',
+                        padding: '4px 8px',
+                        borderRadius: '6px',
+                        fontSize: '12px',
+                        fontWeight: '500',
+                        backgroundColor: statusColor.bg,
+                        color: statusColor.text,
+                        textTransform: 'capitalize'
+                      }}>
+                        {order.status}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </ChartCard>
 
           {/* Top Products */}
-          <Grid item xs={12} lg={4}>
-            <ChartCard title="Top Products">
-              <Stack spacing={3}>
-                {topProducts.map((product, index) => (
-                  <Box key={product.name}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                      <Box sx={{ flex: 1 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 600, mb: 0.5 }}>
-                          {product.name}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {product.sales.toLocaleString()} sales • ${product.revenue.toLocaleString()} revenue
-                        </Typography>
-                      </Box>
-                      <Chip 
-                        label={`${product.change > 0 ? '+' : ''}${product.change}%`}
-                        size="small"
-                        sx={{
-                          backgroundColor: product.change > 0 ? alpha('#10b981', 0.1) : alpha('#ef4444', 0.1),
-                          color: product.change > 0 ? '#059669' : '#dc2626',
-                          fontWeight: 700,
-                          borderRadius: 2,
-                          minWidth: 60
+          <ChartCard title="Top Products">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {topProducts.map((product, index) => (
+                <div key={index} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <div style={{ flex: 1, paddingRight: '8px' }}>
+                      <div style={{
+                        fontWeight: '600',
+                        fontSize: '14px',
+                        color: '#111827',
+                        lineHeight: '1.4',
+                        marginBottom: '4px'
+                      }}>
+                        {product.name}
+                      </div>
+                      <div style={{ fontSize: '12px', color: '#6b7280' }}>
+                        {product.sales.toLocaleString()} sales
+                      </div>
+                    </div>
+                    <div style={{
+                      padding: '4px 8px',
+                      borderRadius: '12px',
+                      fontSize: '12px',
+                      fontWeight: '600',
+                      backgroundColor: product.change > 0 ? '#dcfce7' : '#fee2e2',
+                      color: product.change > 0 ? '#16a34a' : '#dc2626'
+                    }}>
+                      {product.change > 0 ? '+' : ''}{product.change}%
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                    {[12, 18, 15, 22, 25, 20, 28, 24].map((height, i) => (
+                      <div
+                        key={i}
+                        style={{
+                          width: '3px',
+                          height: `${height}px`,
+                          backgroundColor: product.change > 0 ? '#10b981' : '#ef4444',
+                          borderRadius: '1px',
+                          opacity: '0.7'
                         }}
                       />
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
-                      {product.trend.map((point, i) => (
-                        <Box
-                          key={i}
-                          sx={{
-                            width: 4,
-                            height: point * 0.6,
-                            backgroundColor: product.change > 0 ? '#10b981' : '#ef4444',
-                            borderRadius: 1,
-                            opacity: 0.7,
-                          }}
-                        />
-                      ))}
-                    </Box>
-                    {index < topProducts.length - 1 && <Divider sx={{ mt: 2 }} />}
-                  </Box>
-                ))}
-              </Stack>
-            </ChartCard>
-          </Grid>
-        </Grid>
-      </Box>
-    </Box>
+                    ))}
+                  </div>
+
+                  {index < topProducts.length - 1 && (
+                    <hr style={{
+                      border: 'none',
+                      borderTop: '1px solid #e5e7eb',
+                      margin: '8px 0'
+                    }} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </ChartCard>
+        </div>
+      </div>
+    </div>
   );
 };
 

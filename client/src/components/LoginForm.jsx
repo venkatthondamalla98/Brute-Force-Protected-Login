@@ -25,8 +25,10 @@ import {
 } from "@mui/icons-material";
 import { ReportProblem as ErrorIcon } from "@mui/icons-material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -130,8 +132,8 @@ const LoginForm = () => {
           localStorage.setItem("userData", JSON.stringify(response.data.data.user));
         }
 
-        setTimeout(() => {
-          window.location.href = "/dashboard";
+       setTimeout(() => {
+          navigate("/dashboard", { replace: true });
         }, 1500);
       }
 
